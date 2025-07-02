@@ -9,6 +9,7 @@ from encryption_src.base.exceptions import MissingEncryptionKeyError
 from encryption_src.base.interface import IEncryptionHelper
 from encryption_src.fernet.service import FernetEncryptionHelper
 
+
 class TestFernetEncryptionHelper:
 
     @pytest.fixture
@@ -66,8 +67,8 @@ class TestFernetEncryptionHelper:
             "single char",
             "whitespace only",
             "unicode snowman",
-            "very long string"
-        ]
+            "very long string",
+        ],
     )
     def test_encrypt_decrypt_varied_inputs(self, helper, plaintext):
         encrypted = helper.encrypt(plaintext)
@@ -77,12 +78,7 @@ class TestFernetEncryptionHelper:
     @pytest.mark.parametrize(
         "plaintext",
         ["", "test123", "long" * 1000, "\u2603"],
-        ids=[
-            "empty string",
-            "short string",
-            "very long string",
-            "unicode snowman"
-        ]
+        ids=["empty string", "short string", "very long string", "unicode snowman"],
     )
     def test_user_specific_encrypt_decrypt_varied_inputs(self, helper, plaintext):
         salt = base64.urlsafe_b64encode(os.urandom(16)).decode()

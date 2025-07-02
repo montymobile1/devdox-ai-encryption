@@ -48,35 +48,37 @@ from encryption_src.base.interface import IEncryptionHelper
 
 
 class FakeEncryptionHelper(IEncryptionHelper):
-	def __init__(self):
-		self.encrypted_store = {}
-		self.received_calls = []
-		self._counter = 0
-	
-	def encrypt(self, plaintext: str) -> str:
-		self.received_calls.append(("encrypt", plaintext))
-		token = f"enc-{self._counter}"
-		self._counter += 1
-		self.encrypted_store[token] = plaintext
-		return token
-	
-	def decrypt(self, encrypted_text: str) -> str:
-		self.received_calls.append(("decrypt", encrypted_text))
-		return self.encrypted_store.get(encrypted_text, "<unknown>")
-	
-	def encrypt_for_user(self, plaintext: str, salt_b64: str) -> str:
-		self.received_calls.append(("encrypt_for_user", plaintext, salt_b64))
-		token = f"userenc-{salt_b64}-{self._counter}"
-		self._counter += 1
-		self.encrypted_store[token] = plaintext
-		return token
-	
-	def decrypt_for_user(self, encrypted_text: str, salt_b64: str) -> str:
-		self.received_calls.append(("decrypt_for_user", encrypted_text, salt_b64))
-		return self.encrypted_store.get(encrypted_text, "<unknown>")
-	
-	def called_with(self, method: str, *args: Any) -> bool:
-		return any(call[0] == method and call[1:] == args for call in self.received_calls)
-	
-	def clear_calls(self):
-		self.received_calls.clear()
+    def __init__(self):
+        self.encrypted_store = {}
+        self.received_calls = []
+        self._counter = 0
+
+    def encrypt(self, plaintext: str) -> str:
+        self.received_calls.append(("encrypt", plaintext))
+        token = f"enc-{self._counter}"
+        self._counter += 1
+        self.encrypted_store[token] = plaintext
+        return token
+
+    def decrypt(self, encrypted_text: str) -> str:
+        self.received_calls.append(("decrypt", encrypted_text))
+        return self.encrypted_store.get(encrypted_text, "<unknown>")
+
+    def encrypt_for_user(self, plaintext: str, salt_b64: str) -> str:
+        self.received_calls.append(("encrypt_for_user", plaintext, salt_b64))
+        token = f"userenc-{salt_b64}-{self._counter}"
+        self._counter += 1
+        self.encrypted_store[token] = plaintext
+        return token
+
+    def decrypt_for_user(self, encrypted_text: str, salt_b64: str) -> str:
+        self.received_calls.append(("decrypt_for_user", encrypted_text, salt_b64))
+        return self.encrypted_store.get(encrypted_text, "<unknown>")
+
+    def called_with(self, method: str, *args: Any) -> bool:
+        return any(
+            call[0] == method and call[1:] == args for call in self.received_calls
+        )
+
+    def clear_calls(self):
+        self.received_calls.clear()
