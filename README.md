@@ -30,6 +30,7 @@ This library provides a clean, pluggable interface for symmetric encryption serv
 encryption_src/
 ├── base/
 │   ├── constants.py          # Shared error messages or constant strings
+│   ├── exceptions.py          # Contains package specific exceptions
 │   └── interface.py          # The IEncryptionHelper protocol
 ├── fernet/
 │   └── service.py            # FernetEncryptionHelper (production impl)
@@ -98,7 +99,7 @@ The production-grade `FernetEncryptionHelper`:
 - Uses `cryptography.fernet.Fernet`
 - Derives a user-specific key using `PBKDF2HMAC` with SHA-256
 - Encrypts and decrypts both globally and per-user using base64 salts
-- Raises `ValueError` if no key is passed
+- Raises `MissingEncryptionKeyError` if no key is passed
 
 ---
 
